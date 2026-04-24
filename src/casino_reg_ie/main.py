@@ -3,11 +3,13 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
+import logging
+
 from flask import Flask, jsonify, request
+
+from casino_reg_ie.core.logging import setup_logging
 from casino_reg_ie.db import SessionLocal, engine
 from casino_reg_ie.model.models import Base, Regulation
-from casino_reg_ie.core.logging import setup_logging
-import logging
 
 setup_logging()
 
@@ -25,10 +27,10 @@ def insert_reg_blob(source: str, content: str):
         session.add(record)
         session.commit()
         session.refresh(record)
-        logger.info("DB insert success id=%s source=%s", record.id, source)
+        logger.info('DB insert success id=%s source=%s', record.id, source)
         return record.id
     except Exception:
-        logger.exception("DB insert failed")
+        logger.exception('DB insert failed')
         raise
     finally:
         session.close()
@@ -39,13 +41,12 @@ def ingest():
     data = request.json
     source = data.get('source')
     content = data.get('content')
-    logger.info("Ingest request received source=%s size=%s",
-                source, len(content or ""))
+    logger.info('Ingest request received source=%s size=%s', source, len(content or ''))
     if not source or not content:
-        logger.warning("Invalid ingest request missing fields")
+        logger.warning('Invalid ingest request missing fields')
         return jsonify({'error': 'source and content required'}), 400
     record_id = insert_reg_blob(source, content)
-    logger.info("Inserted regulation id=%s", record_id)
+    logger.info('Inserted regulation id=%s', record_id)
     return jsonify({'id': record_id})
 
 
