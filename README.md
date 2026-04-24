@@ -8,7 +8,7 @@ data:
 db:
 - postgresql
 - sqlalchemy
-- - insert_reg_blob
+  - insert_reg_blob
 
 ###  setup
 ```
@@ -19,8 +19,8 @@ pip install -e ".[dev]"
 
 ~/databases/bases/postgresql-18.3/bin/initdb -D ~/databases/data/pg18.3-casino-reg-ie --encoding=UTF8 --locale=en_IE.UTF-8
 kate ~/databases/pg18.3-casino-reg-ie.conf
-~/databases/bases/postgresql-18.3/bin/createdb -p 5433 casino-reg-ie
-~/databases/bases/postgresql-18.3/bin/psql -p 5433 -d casino-reg-ie
+~/databases/bases/postgresql-18.3/bin/createdb -p 5433 casino_reg_ie
+~/databases/bases/postgresql-18.3/bin/psql -p 5433 -d casino_reg_ie
 ```
 
 ### usage
@@ -29,3 +29,13 @@ curl -X POST http://localhost:5000/ingest -H "Content-Type: application/json" -d
 
 curl http://localhost:5000/regulations
 ```
+
+### dev
+pre-commit install
+```
+ruff check . --fix
+ruff format .
+
+pre-commit run --all-files
+```
+python -m ipdb file.py
