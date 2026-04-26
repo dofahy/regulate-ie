@@ -27,6 +27,7 @@ dev = [
   "pytest",
   "pytest-cov",
   "pytest-mock",
+  "python-lsp-ruff",
   "ruff",
   "pre-commit",
   "ipdb"
